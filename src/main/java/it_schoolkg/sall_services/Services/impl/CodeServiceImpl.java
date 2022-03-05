@@ -2,6 +2,7 @@ package it_schoolkg.sall_services.Services.impl;
 
 import it_schoolkg.sall_services.Mappers.UserMapper;
 import it_schoolkg.sall_services.Message.SendSimpleMessage;
+import it_schoolkg.sall_services.Message.SimpleMessage;
 import it_schoolkg.sall_services.Models.dtos.CodeDTO;
 import it_schoolkg.sall_services.Models.dtos.UserDTO;
 import it_schoolkg.sall_services.Models.entities.Code;
@@ -23,7 +24,7 @@ public class CodeServiceImpl implements CodeService {
     private CodeRepo codeRepo;
 
     @Autowired
-    private SendSimpleMessage simpleMessage;
+    private SendSimpleMessage sendsimpleMessage;
 
     @Override
     public void saveCode(CodeDTO codeDTO) {
@@ -55,18 +56,18 @@ public class CodeServiceImpl implements CodeService {
         endOfCodeAction.add(Calendar.MINUTE,3);
 
         Code saveCode = new Code();
-        saveCode.setCode(Integer.parseInt(hashedCode));/******************/
-        saveCode.setEnd_date(endOfCodeAction.getTime());
+        saveCode.setCode(Integer.parseInt(hashedCode));
+        saveCode.setEnd_date(LocalDateTime.MAX); /*********/
         saveCode.setCodeStatus(CodeStatus.NEW);
         saveCode.setUser(UserMapper.INSTANCE.mapToUser(userDTO));
         codeRepo.save(saveCode);
 
-        sendMessage
-                .sendSimplMessage(
-                        userDTO.getEmail()
-                        ,Integer.toString(code));
+        simpleMessage(userDTO.getLogin(),Integer.toString(code));
     }
 
+    private void simpleMessage(String login, String toString) { /********/
+
+    }
     @Override
     public LocalDateTime getLocalDateTime() {
         return null;

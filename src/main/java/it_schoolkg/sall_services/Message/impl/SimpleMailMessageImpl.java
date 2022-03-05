@@ -16,7 +16,7 @@ public class SimpleMailMessageImpl implements SimpleMailMessage {
     }
 
     @Override
-    public void setSubject(String код_потверждения) {
+    public void setSubject(String s) {
 
     }
 

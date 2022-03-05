@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -73,13 +73,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userLockOutChecking(User user) {
         if (Objects.nonNull(user.getBlock_date())){
+            return LocalDateTime.now().isBefore(user.getBlock_date());
+        }
+        return false;
+    }
+
+    /*public boolean userLockOutChecking(User user) {
+        if (Objects.nonNull(user.getBlock_date())){
             if(LocalDateTime.now().isBefore(user.getBlock_date())){
                 return true;
             }
         }
         return false;
     }
-
+*/
 
     @Override
     public User findUserByLogin(String login){
@@ -145,9 +152,6 @@ public class UserServiceImpl implements UserService {
 
         if (LocalDateTime.now().isBefore(checkUserCode.getEnd_date())) {
 
-            /*(Objects.nonNull(user.getBlock_date())){
-                if(LocalDateTime.now().isBefore(user.getBlock_date())){*/
-            //checkUserCode.getEnd_date()
             return new ResponseEntity<>(
                     new ErrorResponse(
                             "Время действия кода потверждения истек!"
@@ -160,38 +164,35 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        if (requestService.countFailedAttempts(checkUserCode)=>3){
-                //3 <= requestService.countFailedAttempts(checkUserCode.setCode())
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.HOUR,1);
-
-                user.setBlock_date(LocalDateTime.MIN.getMinute());
-                userRepo.save(user);
-
+        if (requestService.countFailedAttempts(checkUserCode) >= 3){
+            LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(3);
+            user.setBlock_date(localDateTime);
+            userRepo.save(user);
                 checkUserCode.setCodeStatus(CodeStatus.FAILED);
                 codeService.saveCode(checkUserCode);
-            }
             return new ResponseEntity<>(
                     new ErrorResponse("Авторизация не пройдена! \"Вы ввели некоррректный код потверждения\"",null)
                     ,HttpStatus.NOT_FOUND);
+            }
 
-        requestService.saveRequest(checkUserCode,true);
 
-        Calendar tokensTimeLive =
-                Calendar.getInstance();
-        tokensTimeLive
-                .add(Calendar.HOUR,3);
 
-        String token =
-                Jwts.builder()
-                        .claim("login",login)
-                        .setExpiration(
-                                tokensTimeLive
-                                        .getTime())
-                        .signWith(
-                                SignatureAlgorithm.HS256
-                                , secretKey)
-                        .compact();
+         requestService.saveRequest(checkUserCode, true);
+
+            Calendar tokensTimeLive=Calendar.getInstance();
+            tokensTimeLive
+                    .add(Calendar.HOUR, 3);
+
+            String token =
+                    Jwts.builder()
+                            .claim("login", login)
+                            .setExpiration(
+                                    tokensTimeLive
+                                            .getTime())
+                            .signWith(
+                                    SignatureAlgorithm.HS256
+                                    , secretKey)
+                            .compact();
 
         checkUserCode.setCodeStatus(CodeStatus.APPROVED);
         codeService.saveCode(checkUserCode);
@@ -200,7 +201,6 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(successLogin);
 
     }
-
 
 
 

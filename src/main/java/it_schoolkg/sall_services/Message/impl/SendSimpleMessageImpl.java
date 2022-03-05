@@ -13,7 +13,27 @@ public class SendSimpleMessageImpl implements SendSimpleMessage {
     private JavaMailSenderImpl mailSender;
 
     public void sendSimpleMessage(String to, String text, Object mailSender){
-        SimpleMailMessage message = new SimpleMailMessage();
+        SimpleMailMessage message = new SimpleMailMessage() {
+            @Override
+            public void setFrom(String s) {
+
+            }
+
+            @Override
+            public void setTo(String to) {
+
+            }
+
+            @Override
+            public void setSubject(String код_потверждения) {
+
+            }
+
+            @Override
+            public void setText(String s) {
+
+            }
+        };
         message.setFrom("danielelmirbekov@gmail.com");
         message.setTo(to);
         message.setSubject("Код потверждения");

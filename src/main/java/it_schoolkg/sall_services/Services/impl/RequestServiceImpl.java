@@ -19,9 +19,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public boolean countFailedAttempts(CodeDTO codeDTO) {
+    public int countFailedAttempts(CodeDTO codeDTO) {
         return requestRepo
-                .countByCodeAndSucces(
+                .countByCodeAndSuccess(
                         CodeMapper
                                 .INSTANCE
                                 .mapToCode(codeDTO)

@@ -2,6 +2,7 @@ package it_schoolkg.sall_services.Controllers;
 
 import it_schoolkg.sall_services.Models.dtos.UserDTO;
 import it_schoolkg.sall_services.Services.UserService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/user")
 public class UserControllers {
-
+     @NonNull
      @Autowired
      private UserService userService;
 
