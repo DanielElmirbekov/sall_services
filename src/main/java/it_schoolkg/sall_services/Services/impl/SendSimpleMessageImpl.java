@@ -2,7 +2,6 @@ package it_schoolkg.sall_services.Services.impl;
 
 import it_schoolkg.sall_services.Services.SendSimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;

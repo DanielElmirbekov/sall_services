@@ -42,12 +42,14 @@ public class CodeServiceImpl implements CodeService {
         Code lastCode =
                 codeRepo.findByUserAndCodeStatus(UserMapper.INSTANCE.mapToUser(userDTO),CodeStatus.NEW);
 
+        int codeRandomizer = (int) (((Math.random() * 9999) + 1000));
+
         if (Objects.nonNull(lastCode)){
             lastCode.setCodeStatus(CodeStatus.CANCELLED);
             codeRepo.save(lastCode);
         }
 
-        int codeRandomizer = (int) (((Math.random() * 9999) + 1000));
+        //int codeRandomizer = (int) (((Math.random() * 9999) + 1000));
         String hashedCode = BCrypt.hashpw(Integer.toString(codeRandomizer),gensalt());
         Code code = new Code();
         code.setStart_date(LocalDateTime.now());
