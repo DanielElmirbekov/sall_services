@@ -1,20 +1,19 @@
 package it_schoolkg.sall_services.Services.impl;
 
 import io.jsonwebtoken.*;
-import it_schoolkg.sall_services.Exception.OkResponse;
-import it_schoolkg.sall_services.Message.SendSimpleMessage;
-import it_schoolkg.sall_services.Services.RequestService;
-import it_schoolkg.sall_services.Services.UserService;
 import it_schoolkg.sall_services.Exception.ErrorResponse;
+import it_schoolkg.sall_services.Exception.OkResponse;
 import it_schoolkg.sall_services.Mappers.CodeMapper;
 import it_schoolkg.sall_services.Mappers.UserMapper;
-import it_schoolkg.sall_services.Models.responses.SuccessLogin;
 import it_schoolkg.sall_services.Models.dtos.CodeDTO;
 import it_schoolkg.sall_services.Models.dtos.UserDTO;
 import it_schoolkg.sall_services.Models.entities.User;
 import it_schoolkg.sall_services.Models.enums.CodeStatus;
+import it_schoolkg.sall_services.Models.responses.SuccessLogin;
 import it_schoolkg.sall_services.Repository.dao.UserRepo;
 import it_schoolkg.sall_services.Services.CodeService;
+import it_schoolkg.sall_services.Services.RequestService;
+import it_schoolkg.sall_services.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -39,9 +38,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RequestService requestService;
-
-    @Autowired
-    private SendSimpleMessage sendMessage;
 
     @Value("qwerty312")
     private String secretKey;
@@ -71,14 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean userLockOutChecking(User user) {
-        if (Objects.nonNull(user.getBlock_date())){
-            return LocalDateTime.now().isBefore(user.getBlock_date());
-        }
-        return false;
-    }
-
-    /*public boolean userLockOutChecking(User user) {
+    public boolean userLockOutChecking( User user) {
         if (Objects.nonNull(user.getBlock_date())){
             if(LocalDateTime.now().isBefore(user.getBlock_date())){
                 return true;
@@ -86,7 +75,6 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-*/
 
     @Override
     public User findUserByLogin(String login){
@@ -101,11 +89,13 @@ public class UserServiceImpl implements UserService {
                     new ErrorResponse("Некорректный логин!",null)
                     ,HttpStatus.NOT_FOUND);
         }
+
         boolean check = userLockOutChecking(user);
 
         if (check){
             SimpleDateFormat formatToShowEndOfBlockDate =
                     new SimpleDateFormat("hh:mm a");
+
             return new ResponseEntity<>("Превышено количество попыток входа, вы заблокированы.Повторите попытку" +
                     formatToShowEndOfBlockDate
                             .format(
@@ -116,10 +106,9 @@ public class UserServiceImpl implements UserService {
         codeService.sendCode(
                 UserMapper
                         .INSTANCE
-                        .mapToUserDto(user), sendMessage);
+                        .mapToUserDto(user));
+
         return ResponseEntity.ok(new OkResponse("Код потверждения успешно отправлен!",null));
-        //return ResponseEntity.ok(
-        //                new OkResponse("Код подтверждения успуешно отправлен!",null));
     }
 
     @Override
@@ -138,7 +127,7 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>("Превышено количество попыток входа, вы заблокированы.Повторите попытку через"+
                     formatToShowEndOfBlockDate
                             .format(
-                                    user.getBlock_date()),HttpStatus.CONFLICT);//user.getEnd_Date()),HttpStatus.CONFLICT);
+                                    user.getBlock_date()),HttpStatus.CONFLICT);
         }
         CodeDTO checkUserCode =
                 CodeMapper
@@ -159,7 +148,7 @@ public class UserServiceImpl implements UserService {
                     , HttpStatus.CONFLICT);
         }
 
-        if (!BCrypt.checkpw(code , String.valueOf(checkUserCode.getCode()))) { //if (!BCrypt.checkpw(code, checkUserCode.getCode()))
+        if (!BCrypt.checkpw(code , String.valueOf(checkUserCode.getCode()))) {
             requestService.saveRequest(checkUserCode, false);
         }
 
@@ -216,7 +205,7 @@ public class UserServiceImpl implements UserService {
         }catch (UnsupportedJwtException jwtException){//UnsupportedJwtException jwtException
             return new ResponseEntity<>("Неподерживаемый токен",HttpStatus.CONFLICT);
         }catch (MalformedJwtException jwtException){
-            return new ResponseEntity<>("Неккоректный токен",HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Некоректный токен",HttpStatus.CONFLICT);
         }catch (SignatureException signatureException){//SignatureException signatureException
             return new ResponseEntity<>("Некорректная подпись в токене!",HttpStatus.CONFLICT);
         }catch (Exception exception){

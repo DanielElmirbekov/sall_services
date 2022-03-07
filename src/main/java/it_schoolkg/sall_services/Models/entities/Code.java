@@ -18,13 +18,14 @@ public class Code {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    int code;
+    String code;
     LocalDateTime start_date;
     LocalDateTime end_date;
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "Status")
+    @JoinColumn(name = "Status")
     CodeStatus codeStatus;
     @ManyToOne
     @JoinColumn(name = "id_user")
     User user;
+
 }

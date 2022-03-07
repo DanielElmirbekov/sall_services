@@ -9,8 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements ApplicationContextAware {
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable();
     }
+    //http://localhost:1401/swagger-ui/index.html#/
 }

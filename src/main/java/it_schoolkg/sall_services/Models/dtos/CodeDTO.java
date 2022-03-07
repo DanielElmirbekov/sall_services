@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,12 +16,12 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CodeDTO {
     Long id;
-    int code;
+    String code;
     LocalDateTime start_date;
     LocalDateTime end_date;
 
     @Enumerated
-    @Column(name = "Status")
+    @JoinColumn(name = "Status")
     CodeStatus codeStatus;
 
     UserDTO user;

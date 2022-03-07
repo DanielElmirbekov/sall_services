@@ -3,6 +3,7 @@ package it_schoolkg.sall_services.Services;
 import it_schoolkg.sall_services.Models.dtos.CodeDTO;
 import it_schoolkg.sall_services.Models.dtos.UserDTO;
 import it_schoolkg.sall_services.Models.entities.Code;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +13,9 @@ public interface CodeService {
 
     Code findLastCode(UserDTO userDTO);
 
-    void sendCode(UserDTO userDTO, Object sendMessage);
+    ResponseEntity<String> sendCode(UserDTO userDTO);
 
     LocalDateTime getLocalDateTime();
+
+    void sendCode(String login, String toString);
 }
