@@ -17,7 +17,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    long barcode;
+    int barcode;
     boolean active;
     @ManyToOne
     @JoinColumn(name = "id_categories")
