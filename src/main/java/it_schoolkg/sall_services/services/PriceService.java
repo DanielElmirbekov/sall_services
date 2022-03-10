@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 public interface PriceService {
     ResponseEntity<?> savePrice(String token, PriceDTO priceDTO);
 
-    ResponseEntity<?> getByProduct(String token, PriceDTO priceDTO);
+    ResponseEntity<?> getPriceByProduct(String token, ProductDTO productDTO);
 
     ResponseEntity<?> getAllPrices(String token);
 

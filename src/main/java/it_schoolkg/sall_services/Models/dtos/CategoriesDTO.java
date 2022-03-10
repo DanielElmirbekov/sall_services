@@ -13,7 +13,6 @@ import javax.persistence.UniqueConstraint;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoriesDTO {
     Long id;
-    @Column(unique = true)
     String name;
     boolean active;
 }

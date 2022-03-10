@@ -7,4 +7,6 @@ public interface CategoryService {
     ResponseEntity<?> saveCategory(String token, CategoriesDTO categoriesDTO);
 
     ResponseEntity<?> getByName(String token, String name);
+
+    ResponseEntity<?> getAllCategories(String token);
 }

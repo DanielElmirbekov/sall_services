@@ -21,8 +21,13 @@ public class CategoryController {
     public ResponseEntity<?>updateCategory(@RequestHeader String token , @RequestBody CategoriesDTO categoriesDTO){
         return categoryService.saveCategory(token,categoriesDTO);
     }
-    @GetMapping("/gegtByName")
+    @GetMapping("/getByName")
     public ResponseEntity<?>getByName(@RequestHeader String token , @RequestParam String name){
         return categoryService.getByName(token,name);
+    }
+
+    @GetMapping("/getAllCategories")
+    public ResponseEntity<?> getAllCategories (@RequestHeader String token) {
+        return categoryService.getAllCategories(token);
     }
 }

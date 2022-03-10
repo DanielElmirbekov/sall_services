@@ -1,24 +1,29 @@
 package it_schoolkg.sall_services.Models.entities;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "Products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     String name;
-    int barcode;
+    @Column(unique = true)
+    String barcode;
+
     boolean active;
+
     @ManyToOne
     @JoinColumn(name = "id_categories")
     Categories categories;

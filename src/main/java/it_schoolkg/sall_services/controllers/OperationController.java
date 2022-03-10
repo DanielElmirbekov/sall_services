@@ -16,8 +16,8 @@ public class OperationController {
     private OperationService operationService;
 
     @PostMapping("/provideOperation")
-    public ResponseEntity<?>provideOperation(@RequestHeader String token , @RequestBody List<InputDataForOperation> sellinglist){
-        return operationService.provideOperation(token, sellinglist);
+    public ResponseEntity<?>provideOperation(@RequestHeader String token , @RequestBody List<InputDataForOperation> sellingList){
+        return operationService.provideOperation(token, sellingList);
     }
 
     @GetMapping("/payment")

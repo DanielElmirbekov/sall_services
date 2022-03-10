@@ -18,8 +18,8 @@ public class PriceController {
         return priceService.savePrice(token,priceDTO);
     }
     @PostMapping("/getByProduct")
-    public ResponseEntity<?>getByProduct(@RequestHeader String token , @RequestBody PriceDTO priceDTO){
-        return priceService.getByProduct(token,priceDTO);
+    public ResponseEntity<?>getByProduct(@RequestHeader String token , @RequestBody PriceDTO productDTO){
+        return priceService.getPriceByProduct(token,productDTO);
     }
     @GetMapping("/getAllPrices")
     public ResponseEntity<?>getAllPrices(@RequestHeader String token){

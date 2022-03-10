@@ -4,7 +4,6 @@ import it_schoolkg.sall_services.Models.enums.CodeStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;

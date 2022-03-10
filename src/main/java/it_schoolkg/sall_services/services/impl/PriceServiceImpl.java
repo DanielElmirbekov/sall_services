@@ -5,7 +5,6 @@ import it_schoolkg.sall_services.Mappers.ProductMapper;
 import it_schoolkg.sall_services.Models.dtos.PriceDTO;
 import it_schoolkg.sall_services.Models.dtos.ProductDTO;
 import it_schoolkg.sall_services.Models.entities.Price;
-import it_schoolkg.sall_services.Models.entities.Product;
 import it_schoolkg.sall_services.repository.dao.PriceRepo;
 import it_schoolkg.sall_services.services.PriceService;
 import it_schoolkg.sall_services.services.UserService;
@@ -72,7 +71,7 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public ResponseEntity<?> getByProduct(String token, PriceDTO priceDTO) {
+    public ResponseEntity<?> getPriceByProduct(String token, PriceDTO priceDTO) {
         return null;
     }
 

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PriceDTO {
     Long id;
-    int price;
+    double price;
     LocalDateTime start_date;
     LocalDateTime end_date;
 

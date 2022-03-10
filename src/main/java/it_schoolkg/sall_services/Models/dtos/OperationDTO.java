@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class OperationDTO {
     Long id;
     LocalDateTime add_date;
-    float total_price;
-    String change;
-    int cash;
+    double total_price;
+    double change;
+    double cash;
 
     UserDTO user;
 }

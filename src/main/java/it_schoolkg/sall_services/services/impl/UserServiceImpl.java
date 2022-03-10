@@ -1,8 +1,6 @@
 package it_schoolkg.sall_services.services.impl;
 
 import io.jsonwebtoken.*;
-import it_schoolkg.sall_services.exception.ErrorResponse;
-import it_schoolkg.sall_services.exception.OkResponse;
 import it_schoolkg.sall_services.Mappers.CodeMapper;
 import it_schoolkg.sall_services.Mappers.UserMapper;
 import it_schoolkg.sall_services.Models.dtos.CodeDTO;
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
                 .save(user);
         }else{
             return new ResponseEntity<>(
-                    new ErrorResponse("Пользователь уже существует",null)
+                    new SuccessLogin.ErrorResponse("Пользователь уже существует",null)
                     , HttpStatus.CONFLICT);
         }
         return ResponseEntity.ok(
@@ -86,7 +84,7 @@ public class UserServiceImpl implements UserService {
 
         if (Objects.isNull(user)){
             return new ResponseEntity<>(
-                    new ErrorResponse("Некорректный логин!",null)
+                    new SuccessLogin.ErrorResponse("Некорректный логин!",null)
                     ,HttpStatus.NOT_FOUND);
         }
 
@@ -108,7 +106,7 @@ public class UserServiceImpl implements UserService {
                         .INSTANCE
                         .mapToUserDto(user));
 
-        return ResponseEntity.ok(new OkResponse("Код потверждения успешно отправлен!",null));
+        return ResponseEntity.ok(new SuccessLogin.OkResponse("Код потверждения успешно отправлен!",null));
     }
 
     @Override
@@ -117,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
         if (Objects.isNull(user)){
             return new ResponseEntity<>(
-                    new ErrorResponse("Некорректный логин!",null)
+                    new SuccessLogin.ErrorResponse("Некорректный логин!",null)
                     ,HttpStatus.NOT_FOUND);
         }
         boolean check = userLockOutChecking(user);
@@ -142,7 +140,7 @@ public class UserServiceImpl implements UserService {
         if (LocalDateTime.now().isBefore(checkUserCode.getEnd_date())) {
 
             return new ResponseEntity<>(
-                    new ErrorResponse(
+                    new SuccessLogin.ErrorResponse(
                             "Время действия кода потверждения истек!"
                             , "Вам нужно получить код потверждения повторно!")
                     , HttpStatus.CONFLICT);
@@ -160,7 +158,7 @@ public class UserServiceImpl implements UserService {
                 checkUserCode.setCodeStatus(CodeStatus.FAILED);
                 codeService.saveCode(checkUserCode);
             return new ResponseEntity<>(
-                    new ErrorResponse("Авторизация не пройдена! \"Вы ввели некоррректный код потверждения\"",null)
+                    new SuccessLogin.ErrorResponse("Авторизация не пройдена! \"Вы ввели некоррректный код потверждения\"",null)
                     ,HttpStatus.NOT_FOUND);
             }
 

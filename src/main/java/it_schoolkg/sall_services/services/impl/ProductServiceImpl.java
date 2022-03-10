@@ -3,7 +3,7 @@ package it_schoolkg.sall_services.services.impl;
 import it_schoolkg.sall_services.Mappers.ProductMapper;
 import it_schoolkg.sall_services.Models.dtos.ProductDTO;
 import it_schoolkg.sall_services.Models.entities.Product;
-import it_schoolkg.sall_services.exception.ErrorResponse;
+import it_schoolkg.sall_services.Models.responses.SuccessLogin;
 import it_schoolkg.sall_services.repository.dao.ProductRepo;
 import it_schoolkg.sall_services.services.ProductService;
 import it_schoolkg.sall_services.services.UserService;
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
             productRepo.save(product);
          }else {
              return new ResponseEntity<>(
-                     new ErrorResponse("Такой товар уже существует!",null)
+                     new SuccessLogin.ErrorResponse("Такой товар уже существует!",null)
                      ,HttpStatus.CONFLICT);
          }return ResponseEntity.ok(
                  "Товар успешно сохранен! " +

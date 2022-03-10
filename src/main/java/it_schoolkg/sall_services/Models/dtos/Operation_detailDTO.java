@@ -2,7 +2,6 @@ package it_schoolkg.sall_services.Models.dtos;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @Setter
@@ -11,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Operation_detailDTO {
     Long id;
-    int amount;
+    double amount;
     int quantity;
 
     OperationDTO operation;

@@ -10,7 +10,9 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
+    Product mapToProduct(ProductDTO productDTO);
+
     ProductDTO mapToProductDto(Product product);
 
-    Product mapToProduct(ProductDTO productDTO);
+
 }

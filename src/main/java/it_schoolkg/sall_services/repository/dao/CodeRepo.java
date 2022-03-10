@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CodeRepo extends JpaRepository<Code,Long> {
-    Code findByUserAndCodeStatus(User mapToUser, CodeStatus aNew);
+    Code findByUserAndCodeStatus(User user, CodeStatus status);
 }

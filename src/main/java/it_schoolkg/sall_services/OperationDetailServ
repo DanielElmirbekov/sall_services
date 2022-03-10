@@ -1,0 +1,20 @@
+@Service
+public class OperationDetailServiceImpl implements OperationDetailService {
+
+    @Autowired
+    private OperationDetailRepo operationDetailRepo;
+
+    @Override
+    public void saveOperationDetails(List<OperationDetailDto> operationDetailDtoList) {
+
+        for (OperationDetailDto element: operationDetailDtoList) {
+
+            operationDetailRepo
+                    .save(
+                            OperationDetailMapper
+                                    .INSTANCE
+                                    .mapToOperationDetail(element)
+                    );
+        }
+    }
+}

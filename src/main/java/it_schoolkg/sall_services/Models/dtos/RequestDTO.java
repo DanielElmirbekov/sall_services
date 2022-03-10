@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestDTO {
+
     Long id;
     boolean success;
     LocalDateTime add_date;

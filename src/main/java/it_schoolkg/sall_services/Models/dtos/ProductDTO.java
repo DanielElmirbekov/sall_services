@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 public class ProductDTO {
     Long id;
     String name;
-    int barcode;
+    String barcode;
     boolean active;
 
     CategoriesDTO categories;

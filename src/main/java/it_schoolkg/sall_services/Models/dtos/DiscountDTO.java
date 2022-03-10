@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DiscountDTO {
     Long id;
-    int discount;
+    double discount;
     LocalDateTime start_date;
     LocalDateTime end_date;
 

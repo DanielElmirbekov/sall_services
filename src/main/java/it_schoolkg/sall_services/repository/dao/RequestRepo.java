@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RequestRepo extends JpaRepository<Request,Long> {
-    int countByCodeAndSuccess(Code mapToCode, boolean success);
+    int countByCodeAndSuccess(Code code, boolean success);
 }

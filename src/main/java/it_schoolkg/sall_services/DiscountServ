@@ -1,0 +1,131 @@
+@Service
+public class DiscountServiceImpl implements DiscountService {
+
+    @Autowired
+    private DiscountRepo discountRepo;
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public ResponseEntity<?> saveDiscount(String token, DiscountDto discountDto) {
+        ResponseEntity<?> responseEntity =
+                userService
+                        .verifyLogin(token);
+
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+
+            return responseEntity;
+        }
+
+        List<Discount> discountList =
+                discountRepo
+                        .findAllByProduct(
+                                ProductMapper
+                                        .INSTANCE
+                                        .mapToProduct(
+                                                discountDto
+                                                        .getProduct()));
+
+        if (Objects.nonNull(discountList) && !discountList.isEmpty()) {
+            discountList.stream().filter(oldDiscount -> oldDiscount.getStartDate().before(discountDto.getStartDate())
+
+                            || oldDiscount.getStartDate().after(discountDto.getStartDate())
+
+                            && oldDiscount.getEndDate().before(discountDto.getEndDate())
+
+                            || oldDiscount.getEndDate().after(discountDto.getEndDate()))
+                    .forEach(oldDiscount -> {
+                        oldDiscount.setEndDate(new Date());
+                        discountRepo.save(oldDiscount);
+                    });
+        }
+
+        Discount discount =
+                DiscountMapper
+                        .INSTANCE
+                        .mapToDiscount(discountDto);
+
+        discount = discountRepo.save(discount);
+
+        return ResponseEntity.ok(
+                DiscountMapper
+                        .INSTANCE
+                        .mapToDiscountDto(discount));
+    }
+
+    @Override
+    public ResponseEntity<?> findDiscountByProduct(String token, ProductDto productDto) {
+
+        ResponseEntity<?> responseEntity =
+                userService
+                        .verifyLogin(token);
+
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+
+            return responseEntity;
+        }
+
+        Discount discount =
+                discountRepo
+                        .findActualDiscount(
+                                ProductMapper
+                                        .INSTANCE
+                                        .mapToProduct(productDto)
+                                        .getId()
+                        );
+
+        if (Objects.isNull(discount)) {
+
+            return new ResponseEntity<>(
+                    new ErrorResponse("Вы ввели некорретные данные!", null)
+                    , HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(
+                DiscountMapper
+                        .INSTANCE
+                        .mapToDiscountDto(discount));
+    }
+
+    @Override
+    public ResponseEntity<?> getAllDiscounts(String token) {
+        ResponseEntity<?> responseEntity =
+                userService
+                        .verifyLogin(token);
+
+        if (!responseEntity.getStatusCode().equals(HttpStatus.OK)) {
+
+            return responseEntity;
+        }
+
+        List<Discount> discountList =
+                discountRepo
+                        .findAll();
+
+        return ResponseEntity.ok(
+                discountList
+                        .stream()
+                        .map(DiscountMapper
+                                .INSTANCE::mapToDiscountDto)
+                        .collect(Collectors
+                                .toList()));
+    }
+
+    @Override
+    public double getDiscountByProduct(ProductDto productDto) {
+
+        Discount discount =
+                discountRepo
+                        .findActualDiscount(
+                                productDto
+                                        .getId());
+
+        if (Objects.isNull(discount)) {
+            return 0;
+        }
+
+        return discount
+                .getDiscount();
+    }
+}

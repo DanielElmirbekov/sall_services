@@ -3,7 +3,7 @@ package it_schoolkg.sall_services.services.impl;
 import it_schoolkg.sall_services.Mappers.CategoryMapper;
 import it_schoolkg.sall_services.Models.dtos.CategoriesDTO;
 import it_schoolkg.sall_services.Models.entities.Categories;
-import it_schoolkg.sall_services.exception.ErrorResponse;
+import it_schoolkg.sall_services.Models.responses.SuccessLogin;
 import it_schoolkg.sall_services.repository.dao.CategoriesRepo;
 import it_schoolkg.sall_services.services.CategoryService;
 import it_schoolkg.sall_services.services.UserService;
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoriesRepo.save(categories);
         }else{
             return new ResponseEntity<>(
-                    new ErrorResponse("Такая категория товара уже существует!",null)
+                    new SuccessLogin.ErrorResponse("Такая категория товара уже существует!",null)
                     ,HttpStatus.CONFLICT);
         }
         return ResponseEntity.ok(
@@ -50,6 +50,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ResponseEntity<?> getByName(String token, String name) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAllCategories(String token) {
         return null;
     }
 }
